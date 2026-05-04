@@ -1,29 +1,31 @@
 # Betsson QA Technical Task
 
-![CI](https://github.com/YOUR_USERNAME/betsson-qa-task/actions/workflows/playwright.yml/badge.svg)
+![CI](https://github.com/RomanVeremeicik/betsson-qa-task/actions/workflows/playwright.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue?logo=typescript)
 ![Playwright](https://img.shields.io/badge/Playwright-1.44-green?logo=playwright)
-![License](https://img.shields.io/badge/license-MIT-blue)
+![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
 
 End-to-end UI and API test framework built with **Playwright + TypeScript** for the Betsson QA technical assessment.
 
 ---
 
-## 📋 What's Covered
+## 📋 Test Coverage
 
-### Part 1: UI Testing — [SauceDemo](https://www.saucedemo.com/)
+### Part 1: UI — [SauceDemo](https://www.saucedemo.com/)
 
-| Feature       | Test Cases | Tags |
-|---------------|-----------|------|
-| Login         | Valid login, invalid password, locked user, empty fields (data-driven) | `@smoke` `@regression` |
-| Shopping Cart | Add/remove items, badge count, full checkout flow, missing info validation | `@smoke` `@regression` |
+| Feature | Test Cases | Tags |
+|---|---|---|
+| Login | Valid login, invalid password, locked user, empty fields | `@smoke` `@regression` |
+| Shopping Cart | Add/remove items, badge count, full checkout, validation | `@smoke` `@regression` |
 
-### Part 2: API Testing — [Petstore](https://petstore.swagger.io/)
+### Part 2: API — [Petstore](https://petstore.swagger.io/)
 
-| Endpoint         | Method | Test Cases | Tags |
-|------------------|--------|-----------|------|
-| `/pet`           | POST   | Create valid pet, retrieve after create, optional fields, invalid payload | `@smoke` `@regression` |
-| `/pet/{petId}`   | GET    | Existing pet, 404 for non-existent, invalid ID, full field validation | `@smoke` `@regression` |
+| Endpoint | Method | Test Cases | Tags |
+|---|---|---|---|
+| `/pet` | POST | Create valid pet, retrieve after create, optional fields, invalid payload | `@smoke` `@regression` |
+| `/pet/{petId}` | GET | Existing pet, 404, invalid ID, full field validation | `@smoke` `@regression` |
+
+→ See [TEST-PLAN.md](./TEST-PLAN.md) for full test plan with preconditions and test data.
 
 ---
 
@@ -33,34 +35,24 @@ End-to-end UI and API test framework built with **Playwright + TypeScript** for 
 betsson-qa-task/
 ├── tests/
 │   ├── ui/                  # UI feature specs
-│   │   ├── login.spec.ts
-│   │   └── cart.spec.ts
 │   └── api/                 # API contract specs
-│       ├── addPet.spec.ts
-│       └── getPet.spec.ts
 ├── pages/                   # Page Object Model
-│   ├── LoginPage.ts
-│   ├── InventoryPage.ts
-│   ├── CartPage.ts
-│   └── CheckoutPage.ts
 ├── fixtures/                # Custom Playwright fixtures (DI)
-│   └── index.ts
 ├── schemas/                 # Zod schemas for API response validation
-│   └── petstore.schema.ts
-├── utils/                   # Shared helpers
-│   └── apiHelpers.ts
+├── utils/                   # Shared helpers (retry, builders)
 ├── .github/workflows/       # CI/CD pipeline
-│   └── playwright.yml
-├── playwright.config.ts     # Multi-project config (UI + API)
-├── ARCHITECTURE.md          # Detailed design decisions
-└── .env.example             # Environment variable template
+├── Dockerfile               # Docker support
+├── docker-compose.yml       # Run tests in containers
+├── playwright.config.ts
+├── TEST-PLAN.md             # Full test plan
+└── ARCHITECTURE.md          # Design decisions
 ```
 
-**Key architectural patterns:**
-- **Page Object Model** — clean separation of locators and test logic
-- **Custom Fixtures** — Playwright's DI system for zero-boilerplate setup
-- **Zod Schema Validation** — runtime API response shape verification
-- **Retry Logic** — two-layer retry (test-level + request-level) for resilience
+**Key patterns:**
+- **Page Object Model** — clean separation of locators and logic
+- **Custom Fixtures** — Playwright DI for zero-boilerplate setup
+- **Zod Schema Validation** — runtime API response verification
+- **Retry Logic** — two-layer retry for resilience
 - **Data-driven tests** — `test.each()` for parametric cases
 
 → See [ARCHITECTURE.md](./ARCHITECTURE.md) for full design rationale.
@@ -70,24 +62,22 @@ betsson-qa-task/
 ## 🚀 Getting Started
 
 ### Prerequisites
-
 - Node.js 20+
 - npm 9+
 
 ### Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/betsson-qa-task.git
+git clone https://github.com/RomanVeremeicik/betsson-qa-task.git
 cd betsson-qa-task
-npm install
-npx playwright install --with-deps chromium
+npm install --legacy-peer-deps
+npx playwright install chromium
 ```
 
 ### Environment Setup
 
 ```bash
 cp .env.example .env
-# Edit .env if needed (defaults work out of the box)
 ```
 
 ### Running Tests
@@ -102,43 +92,51 @@ npm run test:ui
 # API tests only
 npm run test:api
 
-# Smoke tests (fast feedback)
+# Smoke tests
 npm run test:smoke
 
 # Regression suite
 npm run test:regression
 ```
 
-### Viewing the Report
+### View Report
 
 ```bash
-npm run report
+npx playwright show-report
+```
+
+---
+
+## 🐳 Docker
+
+```bash
+# Run all tests in Docker
+docker-compose run tests
+
+# UI tests only
+docker-compose run tests-ui
+
+# API tests only
+docker-compose run tests-api
 ```
 
 ---
 
 ## 🔄 CI/CD
 
-Tests run automatically on every push and pull request via **GitHub Actions**.
+Tests run automatically on every push via **GitHub Actions** with parallel UI and API jobs.
 
-The pipeline runs UI and API tests **in parallel**, then publishes the HTML report to **GitHub Pages**.
-
-Report URL: `https://YOUR_USERNAME.github.io/betsson-qa-task/`
-
-To use secrets in your fork, add these to **Settings → Secrets and variables → Actions**:
-- `STANDARD_USER` — `standard_user`
-- `TEST_PASSWORD` — `secret_sauce`
-- `LOCKED_USER` — `locked_out_user`
+Report: `https://RomanVeremeicik.github.io/betsson-qa-task/`
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| [Playwright](https://playwright.dev/) | 1.44 | UI + API test runner |
-| [TypeScript](https://www.typescriptlang.org/) | 5.4 | Type-safe test code |
-| [Zod](https://zod.dev/) | 3.23 | API response schema validation |
-| [ESLint](https://eslint.org/) | 9 | Code quality |
-| [Prettier](https://prettier.io/) | 3.2 | Code formatting |
-| [GitHub Actions](https://github.com/features/actions) | — | CI/CD pipeline |
+| Tool | Purpose |
+|---|---|
+| Playwright 1.44 | UI + API test runner |
+| TypeScript 5.4 | Type-safe test code |
+| Zod 3.23 | API response schema validation |
+| Docker | Containerized test execution |
+| GitHub Actions | CI/CD pipeline |
+| ESLint + Prettier | Code quality |
