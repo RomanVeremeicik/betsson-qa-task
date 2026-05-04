@@ -3,6 +3,10 @@ import { PetSchema } from '../../schemas/petstore.schema';
 import { parseResponse, buildPetPayload, generatePetId } from '../../utils/apiHelpers';
 
 test.describe('POST /pet — Add New Pet', () => {
+// NOTE: petstore.swagger.io is a public shared API with known instability.
+// It occasionally returns 500 errors unrelated to our test logic.
+// This is a known limitation documented in ARCHITECTURE.md.
+// Tests verify correct behavior when API responds normally (200).
   test('TC-API-PET-01: should create a pet and return valid schema @smoke', async ({ request }) => {
     const payload = buildPetPayload({ name: 'Buddy', status: 'available' });
     const response = await request.post('pet', { data: payload });
