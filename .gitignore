@@ -5,3 +5,4 @@ test-results/
 allure-results/
 allure-report/
 *.log
+.env
