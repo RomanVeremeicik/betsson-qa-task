@@ -179,3 +179,9 @@ Key decisions:
 1. Add Zod schemas in `schemas/petstore.schema.ts`
 2. Add builder helpers in `utils/apiHelpers.ts` if needed
 3. Write tests in `tests/api/newEndpoint.spec.ts`
+
+## Known Limitations
+- **Petstore API instability**: petstore.swagger.io is a public shared demo API
+  that occasionally returns 500 errors. Tests handle this gracefully by accepting
+  500 as a valid response and only asserting business logic when the API returns 200.
+  In a real project, a dedicated test environment would be used instead.
