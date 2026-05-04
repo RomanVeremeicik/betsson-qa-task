@@ -9,7 +9,7 @@ End-to-end UI and API test framework built with **Playwright + TypeScript** for 
 
 ---
 
-## 📋 Test Coverage
+##  Test Coverage
 
 ### Part 1: UI — [SauceDemo](https://www.saucedemo.com/)
 
@@ -29,7 +29,7 @@ End-to-end UI and API test framework built with **Playwright + TypeScript** for 
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 betsson-qa-task/
@@ -59,7 +59,7 @@ betsson-qa-task/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js 20+
@@ -122,7 +122,7 @@ docker-compose run tests-api
 
 ---
 
-## 🔄 CI/CD
+##  CI/CD
 
 Tests run automatically on every push via **GitHub Actions** with parallel UI and API jobs.
 
@@ -130,7 +130,7 @@ Report: `https://RomanVeremeicik.github.io/betsson-qa-task/`
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Tool | Purpose |
 |---|---|
